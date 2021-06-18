@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 
 @Component({
@@ -6,16 +6,27 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   templateUrl: './images-canvas.component.html',
   styleUrls: ['./images-canvas.component.scss']
 })
-export class CanvasComponent {
+export class CanvasComponent implements OnInit, AfterViewInit {
   @ViewChild('myCanvas', {static: false}) canvasEl!: ElementRef;
   public context: CanvasRenderingContext2D | any;
-  scrHeight: number =  500;
-  scrWidth: number = 500;
-
-
+  scrHeight: number = 100;
+  scrWidth: number = 90;
+  
+  constructor() {
+    
+  }
+  
+  ngOnInit(): void {
+  }
+  
+  /**
+   * wait to load the template
+   * create the element ref for the canvas
+   */
   ngAfterViewInit(): void {
     this.context = this.canvasEl.nativeElement.getContext('2d');
-    this.draw();
+    this.draw();  
+   
   }
 
    /**

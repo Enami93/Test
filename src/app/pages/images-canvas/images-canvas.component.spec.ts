@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CanvasComponent } from './canvas.component';
+import { CanvasComponent } from './images-canvas.component';
 
 describe('CanvasComponent', () => {
   let component: CanvasComponent;
