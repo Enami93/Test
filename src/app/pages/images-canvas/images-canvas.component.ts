@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ElectronService } from '../../../shared/services/electron.services';
 
 
 @Component({
@@ -12,7 +13,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   scrHeight: number = 100;
   scrWidth: number = 90;
   
-  constructor() {
+  constructor(private electronService: ElectronService) {
     
   }
   
@@ -26,7 +27,6 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.context = this.canvasEl.nativeElement.getContext('2d');
     this.draw();  
-   
   }
 
    /**
@@ -40,6 +40,8 @@ export class CanvasComponent implements OnInit, AfterViewInit {
       const x = (this.canvasEl.nativeElement as HTMLCanvasElement).width / 2;
       const y = (this.canvasEl.nativeElement as HTMLCanvasElement).height / 2;
       this.context.fillText("AKKA", x, y);
-  
+  }
+  load() {
+    this.electronService.loadImage();
   }
 }
