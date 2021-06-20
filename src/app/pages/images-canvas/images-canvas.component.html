@@ -1,1 +1,14 @@
-<canvas #myCanvas [style.width.%]="scrWidth" [style.height.%]="scrHeight"></canvas>
+
+<div>
+    <div class="col">
+        <mat-card class="card-actions">
+            <button mat-raised-button color="primary" (click) = "load()" color="primary">Load Image</button>
+            <button mat-raised-button color="primary" (click) = "zoom()" color="primary">Zoom</button>
+        </mat-card>
+    </div>
+    <div class="col">
+        <div class="col text-center">
+            <canvas #myCanvas [style.width.px]="scrWidth" [style.height.px]="scrHeight" ></canvas>
+        </div>
+    </div>
+</div>
