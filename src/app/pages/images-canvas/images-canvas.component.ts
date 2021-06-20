@@ -10,14 +10,25 @@ import { ElectronService } from '../../../shared/services/electron.services';
 export class CanvasComponent implements OnInit, AfterViewInit {
   @ViewChild('myCanvas', {static: false}) canvasEl!: ElementRef;
   public context: CanvasRenderingContext2D | any;
-  scrHeight: number = 100;
+  scrHeight: number = 50;
   scrWidth: number = 90;
   
   constructor(private electronService: ElectronService) {
     
   }
   
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+      // this to avoid the visualisation problem of size of the canvas
+          this.scrHeight = window.innerHeight - 160;
+          this.scrWidth = window.innerWidth - 20;
+  }
+
   ngOnInit(): void {
+    let winWidth = window.innerWidth;
+    let winHeight = window.innerHeight;
+    this.scrHeight = winHeight - 160;
+    this.scrWidth = winWidth - 20;
   }
   
   /**
@@ -41,7 +52,16 @@ export class CanvasComponent implements OnInit, AfterViewInit {
       const y = (this.canvasEl.nativeElement as HTMLCanvasElement).height / 2;
       this.context.fillText("AKKA", x, y);
   }
+  /**
+   * use the electron service to load one image from system
+   */
   load() {
     this.electronService.loadImage();
+  }
+  /**
+   * Apply zoom 2x on the selected image
+   */
+  zoom() {
+
   }
 }
