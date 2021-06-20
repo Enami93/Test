@@ -23,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRippleModule } from '@angular/material/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   exports: [
@@ -49,7 +49,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatDialogModule,
     MatStepperModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatGridListModule
   ],
 })
 export class MaterialModule {}
