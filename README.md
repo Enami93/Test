@@ -1,30 +1,73 @@
 # Testia
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.0-rc.0.
+# Introduction
 
-## Development server
+Bootstrap and package your project with Angular 12 and Electron 13 (Typescript + SASS + Hot Reload) for creating Desktop applications.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Currently runs with:
 
-## Code scaffolding
+- Angular v12.0.2
+- Electron v13.0.1
+- Electron Builder v22.10.5
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+With this sample, you can:
 
-## Build
+- Run your app in a local development environment with Electron & Hot reload
+- Run your app in a production environment
+- Package your app into an executable file for Linux, Windows & Mac
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+/!\ Hot reload only pertains to the renderer process. The main electron process is not able to be hot reloaded, only restarted.
 
-## Running unit tests
+/!\ Angular 12.x CLI needs Node 11 or later to work correctly.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Project structure
 
-## Running end-to-end tests
+|Folder|Description|
+| ---- | ---- |
+| app | Electron main process folder (NodeJS) |
+| src | Electron renderer process folder (Web / Angular) |
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Getting Started
 
-## Further help
+*Clone this repository locally:*
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-# Akka-Testia
+``` bash
+git clone https://gitlab.akka.eu/Imane.LAIDANI/akka-testia.git
+```
 
-Test Angular & ElectronJs & Canvas API
+*Install dependencies with npm (used by Electron renderer process):*
+
+``` bash
+npm install
+```
+
+## Use Electron / NodeJS libraries
+
+3rd party libraries used in electron's main process (like an ORM) have to be added in `dependencies` of `app/package.json`.
+This sample project runs in both modes (web and electron). To make this work, **you have to import your dependencies the right way**. \
+
+
+## Use "web" 3rd party libraries (like angular, material, bootstrap)
+
+3rd party libraries used in electron's renderer process (like angular) have to be added in `dependencies` of `package.json`. \
+Please check `providers/electron.service.ts` to watch how conditional import of libraries has to be done when using NodeJS / 3rd party libraries in renderer context (i.e. Angular).
+
+
+## Included Commands
+
+|Command|Description|
+| ---- | ---- |
+|`npm run ng:serve`| Execute the app in the browser |
+|`npm run build`| Build the app. Your built files are in the /dist folder. |
+|`npm run build:prod`| Build the app with Angular aot. Your built files are in the /dist folder. |
+|`npm run electron:local`| Builds your application and start electron
+|`npm run electron:build`| Builds your application and creates an app consumable based on your operating system |
+
+**Only /dist folder and NodeJS dependencies are included in the final bundle.**
+
+
+
+
+
+
+
