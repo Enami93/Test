@@ -5,6 +5,7 @@ import { ipcRenderer, webFrame, ipcMain} from 'electron';
 import * as remote from '@electron/remote';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,32 +39,23 @@ export class ElectronService {
       this.fs = window.require('fs');
     }
   }
-  loadImage() {
-    console.log("here", this.ipcRenderer);
-      this.remote.dialog.showOpenDialog({
-        properties: ['openFile'], 
-        filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif']}]
-      }).then(result => {
-        console.log(result.canceled)
-        console.log(result.filePaths)
-        this.fs.readFile(result.filePaths[0], function(err, data) { 
-          console.log(data)
-      })
-    
-      })
-    }
-}
+  /**
+   * load only image and update value of selected image
+   */
+  loadImage(selectedFile: Subject<any>){
+  //  console.log(this.remote.dialog);
+   return this.remote.dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }]
+    }).then(data => {
+        this.fs.readFile(data.filePaths[0],  {encoding: 'base64'}, function (err, data) {
+        selectedFile.next(data);
+       });
 
-    // Change how to handle the file content
-  
-  // (files) => {
-  //   console.log(files);
-  //       if(!files) return; 
-  //       const file = files[0];
-  //       this.fs.readFile(file, (err, data) => {
-  //         console.log("Asynchronous read: " + data.toString());
-  //       })
-  //      });
+    });
+  }
+
+}
 
   
 

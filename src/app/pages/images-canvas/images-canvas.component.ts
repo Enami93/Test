@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ElectronService } from '../../../shared/services/electron.services';
+import { fromEvent } from 'rxjs';
 
+import { Subject } from 'rxjs';
+import * as fs from 'fs';
 
 @Component({
   selector: 'app-canvas',
@@ -12,23 +15,20 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   public context: CanvasRenderingContext2D | any;
   scrHeight: number = 50;
   scrWidth: number = 90;
-  
-  constructor(private electronService: ElectronService) {
-    
-  }
-  
-  @HostListener('window:resize', ['$event'])
-  getScreenSize(event?) {
-      // this to avoid the visualisation problem of size of the canvas
-          this.scrHeight = window.innerHeight - 160;
-          this.scrWidth = window.innerWidth - 20;
-  }
+  img: HTMLImageElement;
+  fs = window.require('fs');
+  selectedFile = new Subject<any>();
 
+  constructor(private electronService: ElectronService) {}
+  
   ngOnInit(): void {
-    let winWidth = window.innerWidth;
-    let winHeight = window.innerHeight;
-    this.scrHeight = winHeight - 160;
-    this.scrWidth = winWidth - 20;
+    // subscribe 
+    this.selectedFile.subscribe(input => {
+      if(input) {
+        this.fs.writeFile('src/assets/imgs/fileName.png', input, 'base64', function(err) {});
+      }
+    });
+   
   }
   
   /**
@@ -37,31 +37,46 @@ export class CanvasComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit(): void {
     this.context = this.canvasEl.nativeElement.getContext('2d');
-    this.draw();  
+    const path = 'src/assets/imgs/fileName.png';
+    this.img = new Image(); // Create a new Image
+    this.img.src = 'assets/imgs/fileName.png';
+    
+    // check if there is an uploaded image in the assets 
+    this.fs.access(path, this.fs.F_OK, (err) => {
+      if (err) {
+        //if no 
+        console.error(err)
+        return
+      }
+      // add the image to the canvas 
+      this.context.canvas.width = this.img.naturalWidth;
+      this.context.canvas.height = this.img.naturalHeight;
+      this.context.drawImage(this.img, 0, 0, this.img.naturalWidth, this.img.naturalHeight);
+    })
+
+    // listen the the event click on the canvas
+    fromEvent(this.canvasEl.nativeElement, 'click').subscribe(() => this.zoom());
+
   }
 
-   /**
-   * Just some code to test the canvas
-   */
-    private draw() {
-      this.context.font = "30px Arial";
-      this.context.textBaseline = 'middle';
-      this.context.textAlign = 'center';
-  
-      const x = (this.canvasEl.nativeElement as HTMLCanvasElement).width / 2;
-      const y = (this.canvasEl.nativeElement as HTMLCanvasElement).height / 2;
-      this.context.fillText("AKKA", x, y);
-  }
   /**
    * use the electron service to load one image from system
    */
   load() {
-    this.electronService.loadImage();
+    this.electronService.loadImage(this.selectedFile);
   }
   /**
-   * Apply zoom 2x on the selected image
+   * Apply zoom 2x (in our case) on the selected image
    */
-  zoom() {
+  zoom(scaleParam?) {
+    const scale = 2;
+  
+    // calculate new height and width
+    this.context.canvas.width = this.img.naturalWidth * scale;
+    this.context.canvas.height = this.img.naturalHeight * scale;
 
+    // apply the scale zoom
+    this.context.scale(2, 2);
+    this.context.drawImage(this.img, 0, 0);
   }
 }
