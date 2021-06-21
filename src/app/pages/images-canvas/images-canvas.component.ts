@@ -22,6 +22,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   constructor(private electronService: ElectronService) {}
   
   ngOnInit(): void {
+    // subscribe 
     this.selectedFile.subscribe(input => {
       if(input) {
         this.fs.writeFile('src/assets/imgs/fileName.png', input, 'base64', function(err) {});
@@ -50,9 +51,8 @@ export class CanvasComponent implements OnInit, AfterViewInit {
       this.context.drawImage(this.img, 0, 0, this.img.naturalWidth, this.img.naturalHeight);
     })
 
+    // listen the the event click on the canvas
     fromEvent(this.canvasEl.nativeElement, 'click').subscribe(() => this.zoom());
-
-
 
   }
 
@@ -61,7 +61,6 @@ export class CanvasComponent implements OnInit, AfterViewInit {
    */
   load() {
     this.electronService.loadImage(this.selectedFile);
-
   }
   /**
    * Apply zoom 2x (in our case) on the selected image
