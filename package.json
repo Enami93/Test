@@ -54,6 +54,8 @@
     "@electron/remote": "1.0.4",
     "bootstrap": "^5.0.1",
     "core-js": "3.6.5",
+    "file-saver": "^2.0.5",
+    "ng-event-bus": "^2.0.0",
     "rxjs": "6.6.6",
     "tslib": "2.1.0",
     "zone.js": "~0.11.4"
