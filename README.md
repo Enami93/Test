@@ -50,7 +50,7 @@ This sample project runs in both modes (web and electron). To make this work, **
 ## Use "web" 3rd party libraries (like angular, material, bootstrap)
 
 3rd party libraries used in electron's renderer process (like angular) have to be added in `dependencies` of `package.json`. \
-Please check `providers/electron.service.ts` to watch how conditional import of libraries has to be done when using NodeJS / 3rd party libraries in renderer context (i.e. Angular).
+Please check `shared/services/electron.service.ts` to watch how conditional import of libraries has to be done when using NodeJS / 3rd party libraries in renderer context (i.e. Angular).
 
 
 ## Included Commands
