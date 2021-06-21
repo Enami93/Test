@@ -41,11 +41,14 @@ export class CanvasComponent implements OnInit, AfterViewInit {
     this.img = new Image(); // Create a new Image
     this.img.src = 'assets/imgs/fileName.png';
     
+    // check if there is an uploaded image in the assets 
     this.fs.access(path, this.fs.F_OK, (err) => {
       if (err) {
+        //if no 
         console.error(err)
         return
       }
+      // add the image to the canvas 
       this.context.canvas.width = this.img.naturalWidth;
       this.context.canvas.height = this.img.naturalHeight;
       this.context.drawImage(this.img, 0, 0, this.img.naturalWidth, this.img.naturalHeight);
