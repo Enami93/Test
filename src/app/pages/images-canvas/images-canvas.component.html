@@ -4,7 +4,7 @@
         <mat-card class="card-actions">
             <mat-card-content>
                 <button class="m-1" mat-raised-button color="primary"  (click) = "load()" color="primary">Importer</button>
-                <button class="m-1" mat-raised-button color="primary" (click) = " zoom()" color="primary">{{btn_zoom}}</button>
+                <button class="m-1" mat-raised-button color="primary" (click) = " zoom()" color="primary" [disabled]="hide">{{btn_zoom}}</button>
             </mat-card-content>
         </mat-card>
     </div>

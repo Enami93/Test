@@ -28,6 +28,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   selectedFile = new Subject<any>();
   isZoom = false;
   btn_zoom: string = BTN_ZOOM_TXT;
+  hide = true;
   constructor(private electronService: ElectronService) {}
 
   ngOnInit(): void {
@@ -63,6 +64,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
         console.error(err);
         return;
       }
+      this.hide = false;
       // add the image to the canvas
       this.context.canvas.width = this.img.naturalWidth;
       this.context.canvas.height = this.img.naturalHeight;
@@ -129,15 +131,17 @@ export class CanvasComponent implements OnInit, AfterViewInit {
      * @param tooltipString tooltipMessage
      */
     displayCursorTooltip(e: MouseEvent, tooltipString: string) {
-      const x = e.x;
-      const y = e.y;
-      const tooltipElt = document.getElementById('tooltip-span');
-      if (tooltipElt) {
-          tooltipElt.innerHTML = tooltipString;
-          tooltipElt.style.display = 'block';
-          tooltipElt.style.top = y + 20 + 'px';
-          tooltipElt.style.left = x + 20 + 'px';
-          tooltipElt.style.position = 'fixed';
+      if (!this.hide) {
+        const x = e.x;
+        const y = e.y;
+        const tooltipElt = document.getElementById('tooltip-span');
+        if (tooltipElt) {
+            tooltipElt.innerHTML = tooltipString;
+            tooltipElt.style.display = 'block';
+            tooltipElt.style.top = y + 20 + 'px';
+            tooltipElt.style.left = x + 20 + 'px';
+            tooltipElt.style.position = 'fixed';
+        }
       }
   }
 
@@ -145,10 +149,12 @@ export class CanvasComponent implements OnInit, AfterViewInit {
      * hide the cursor.
      */
        hideCursorTooltipDeplacer() {
+        if (this.hide) {
         const tooltipElt = document.getElementById('tooltip-span');
         if (tooltipElt) {
             tooltipElt.style.display = 'none';
         }
+      }
     }
 
 
