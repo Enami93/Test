@@ -1,13 +1,17 @@
 
 <div>
-    <div class="col">
+    <div class="col text-center">
         <mat-card class="card-actions">
-            <button mat-raised-button color="primary" (click) = "load()" color="primary">Load Image</button>
+            <mat-card-content>
+                <button class="m-1" mat-raised-button color="primary"  (click) = "load()" color="primary">Importer</button>
+                <button class="m-1" mat-raised-button color="primary" (click) = " zoom()" color="primary">{{btn_zoom}}</button>
+            </mat-card-content>
         </mat-card>
     </div>
+    <span id="tooltip-span"></span>
     <div class="col" [style.marginTop.%]="2">
         <div class="col text-center">
-            <canvas #myCanvas></canvas>
+            <canvas (mouseover)="displayCursorTooltip($event, 'cliquer pour zoomer/dézoomer')" (mouseleave)="hideCursorTooltipDeplacer()()" #myCanvas></canvas>
         </div>
     </div>
 </div>
