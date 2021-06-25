@@ -12,4 +12,18 @@
     margin-left: 4%;
     margin-top: 1%;
 }
-  
+::ng-deep .mat-card {
+    text-align: start;
+}
+
+#tooltip-span {
+    background-color: #4c4c4c;
+    color: white;
+    display: none;
+    top: 318px;
+    left: 67px;
+    position: fixed;
+    padding: 4px 8px;
+    font-weight: 400;
+    z-index: 300;
+}

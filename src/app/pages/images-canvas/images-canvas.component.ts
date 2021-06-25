@@ -11,6 +11,7 @@ import { fromEvent } from "rxjs";
 
 import { Subject } from "rxjs";
 import * as fs from "fs";
+import { BTN_ZOOM_TXT, BTN_DEZOOM_TXT, PATH_IMAGE} from "../../../shared/contants/constant.string";
 
 @Component({
   selector: "app-canvas",
@@ -26,6 +27,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
   fs = window.require("fs");
   selectedFile = new Subject<any>();
   isZoom = false;
+  btn_zoom: string = BTN_ZOOM_TXT;
   constructor(private electronService: ElectronService) {}
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
     this.selectedFile.subscribe((input) => {
       if (input) {
         this.fs.writeFile(
-          "src/assets/imgs/fileName.png",
+          PATH_IMAGE,
           input,
           "base64",
           function (err) {}
@@ -50,7 +52,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
    */
   ngAfterViewInit(): void {
     this.context = this.canvasEl.nativeElement.getContext("2d");
-    const path = "src/assets/imgs/fileName.png";
+    const path = PATH_IMAGE;
     this.img = new Image(); // Create a new Image
     this.img.src = "assets/imgs/fileName.png";
 
@@ -99,6 +101,7 @@ export class CanvasComponent implements OnInit, AfterViewInit {
       this.drawContents(1);
     }
     this.isZoom = !this.isZoom;
+    return  this.btn_zoom = this.isZoom ? BTN_DEZOOM_TXT : BTN_ZOOM_TXT;
   }
   /**
    *
@@ -119,4 +122,34 @@ export class CanvasComponent implements OnInit, AfterViewInit {
     this.context.clearRect(0, 0, newWidth, newHeight);
     this.context.drawImage(this.img, 0, 0);
   }
+
+   /**
+     * Display the cursor.
+     * @param eMouseEvent
+     * @param tooltipString tooltipMessage
+     */
+    displayCursorTooltip(e: MouseEvent, tooltipString: string) {
+      const x = e.x;
+      const y = e.y;
+      const tooltipElt = document.getElementById('tooltip-span');
+      if (tooltipElt) {
+          tooltipElt.innerHTML = tooltipString;
+          tooltipElt.style.display = 'block';
+          tooltipElt.style.top = y + 20 + 'px';
+          tooltipElt.style.left = x + 20 + 'px';
+          tooltipElt.style.position = 'fixed';
+      }
+  }
+
+      /**
+     * hide the cursor.
+     */
+       hideCursorTooltipDeplacer() {
+        const tooltipElt = document.getElementById('tooltip-span');
+        if (tooltipElt) {
+            tooltipElt.style.display = 'none';
+        }
+    }
+
+
 }
